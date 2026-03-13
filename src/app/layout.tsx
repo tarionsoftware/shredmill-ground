@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     siteName: "Shredmill Ground",
     images: [
       {
-        url: "/shredmill-product.jpg",
+        url: "/shredmill-product.png",
         width: 1200,
         height: 630,
         alt: "Shredmill Ground Training Equipment",
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
     title: "Shredmill Ground | Coming March 25, 2026",
     description:
       "The next evolution in speed and agility training equipment. Get on the list.",
-    images: ["/shredmill-product.jpg"],
+    images: ["/shredmill-product.png"],
   },
   robots: {
     index: true,
