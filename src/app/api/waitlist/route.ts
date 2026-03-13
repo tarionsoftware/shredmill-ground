@@ -64,8 +64,35 @@ export async function POST(request: Request) {
         `,
       });
     } catch (emailErr) {
-      // Don't fail the signup if email fails — data is already saved
       console.error("Email notification failed:", emailErr);
+    }
+
+    // Send confirmation email to the person who signed up
+    try {
+      await resend.emails.send({
+        from: "Shredmill Ground <noreply@shredmillground.com>",
+        to: email,
+        subject: "You're on the Shredmill Ground Waitlist!",
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background-color: #0a0a0a; padding: 40px 30px; color: #ffffff;">
+            <div style="text-align: center; margin-bottom: 30px;">
+              <h1 style="font-size: 28px; margin: 0;">
+                <span style="color: #39ff14;">SHREDMILL</span> GROUND
+              </h1>
+            </div>
+            <h2 style="color: #39ff14; text-align: center; font-size: 22px;">You're on the list, ${firstName}!</h2>
+            <p style="color: #aaaaaa; text-align: center; font-size: 16px; line-height: 1.6;">
+              Thanks for signing up. We'll keep you updated as we get closer to launch day on <strong style="color: #ffffff;">March 25, 2026</strong>.
+            </p>
+            <hr style="border: none; border-top: 1px solid #222222; margin: 30px 0;" />
+            <p style="color: #666666; text-align: center; font-size: 12px;">
+              &copy; ${new Date().getFullYear()} Shredmill. All rights reserved.
+            </p>
+          </div>
+        `,
+      });
+    } catch (emailErr) {
+      console.error("Confirmation email failed:", emailErr);
     }
 
     return NextResponse.json({ success: true });

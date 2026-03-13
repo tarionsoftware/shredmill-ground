@@ -42,11 +42,11 @@ export default function Home() {
         {/* Product Image */}
         <div className="animate-fade-in-up-delay-3 mb-16 w-full max-w-lg">
           <Image
-            src="/shredmill-product.jpg"
+            src="/shredmill-product.png"
             alt="Shredmill Ground Training Equipment"
             width={800}
-            height={600}
-            className="rounded-2xl w-full h-auto"
+            height={772}
+            className="w-full h-auto"
             priority
           />
         </div>
