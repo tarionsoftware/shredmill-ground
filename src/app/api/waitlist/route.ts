@@ -1,7 +1,9 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+function getResend() {
+  return new Resend(process.env.RESEND_API_KEY);
+}
 
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
@@ -48,7 +50,7 @@ export async function POST(request: Request) {
 
     // Send notification email to info@shredmill.com
     try {
-      await resend.emails.send({
+      await getResend().emails.send({
         from: "Shredmill Ground <noreply@shredmillground.com>",
         to: "info@shredmill.com",
         subject: `New Waitlist Signup: ${firstName} ${lastName}`,
@@ -69,7 +71,7 @@ export async function POST(request: Request) {
 
     // Send confirmation email to the person who signed up
     try {
-      await resend.emails.send({
+      await getResend().emails.send({
         from: "Shredmill Ground <noreply@shredmillground.com>",
         to: email,
         subject: "You're on the Shredmill Ground Waitlist!",
