@@ -1,6 +1,7 @@
 import Image from "next/image";
 import CountdownTimer from "./components/CountdownTimer";
 import WaitlistForm from "./components/WaitlistForm";
+import WaitlistMapWrapper from "./components/WaitlistMapWrapper";
 
 export default function Home() {
   return (
@@ -49,6 +50,11 @@ export default function Home() {
             className="w-full h-auto"
             priority
           />
+        </div>
+
+        {/* Waitlist Map */}
+        <div className="mb-16 w-full flex justify-center px-0 sm:px-6">
+          <WaitlistMapWrapper />
         </div>
 
         {/* Waitlist Form */}
