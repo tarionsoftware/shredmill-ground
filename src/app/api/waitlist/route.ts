@@ -8,6 +8,65 @@ function getResend() {
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
+async function geocodeZip(zipCode: string): Promise<{
+  latitude: number;
+  longitude: number;
+  city: string;
+  state: string;
+  country: string;
+} | null> {
+  try {
+    // Try US zip first
+    const usRes = await fetch(`https://api.zippopotam.us/us/${zipCode.slice(0, 5)}`);
+    if (usRes.ok) {
+      const data = await usRes.json();
+      const place = data.places?.[0];
+      if (place) {
+        return {
+          latitude: parseFloat(place.latitude),
+          longitude: parseFloat(place.longitude),
+          city: place["place name"],
+          state: place.state,
+          country: "US",
+        };
+      }
+    }
+    // Try Canada
+    const caRes = await fetch(`https://api.zippopotam.us/ca/${zipCode.replace(/\s/g, "").slice(0, 3)}`);
+    if (caRes.ok) {
+      const data = await caRes.json();
+      const place = data.places?.[0];
+      if (place) {
+        return {
+          latitude: parseFloat(place.latitude),
+          longitude: parseFloat(place.longitude),
+          city: place["place name"],
+          state: place.state,
+          country: "CA",
+        };
+      }
+    }
+    // Try GB
+    const gbRes = await fetch(`https://api.zippopotam.us/gb/${zipCode.replace(/\s/g, "")}`);
+    if (gbRes.ok) {
+      const data = await gbRes.json();
+      const place = data.places?.[0];
+      if (place) {
+        return {
+          latitude: parseFloat(place.latitude),
+          longitude: parseFloat(place.longitude),
+          city: place["place name"],
+          state: place.state,
+          country: "GB",
+        };
+      }
+    }
+  } catch (err) {
+    console.error("Geocoding failed for zip:", zipCode, err);
+  }
+  return null;
+}
+
 export async function POST(request: Request) {
   try {
     const body = await request.json();
@@ -19,6 +78,9 @@ export async function POST(request: Request) {
         { status: 400 }
       );
     }
+
+    // Geocode the zip code
+    const geo = await geocodeZip(zipCode);
 
     // Save to Supabase
     const supabaseRes = await fetch(`${SUPABASE_URL}/rest/v1/waitlist_signups`, {
@@ -36,6 +98,13 @@ export async function POST(request: Request) {
         phone,
         organization: organization || null,
         zip_code: zipCode,
+        ...(geo && {
+          latitude: geo.latitude,
+          longitude: geo.longitude,
+          city: geo.city,
+          state: geo.state,
+          country: geo.country,
+        }),
       }),
     });
 
