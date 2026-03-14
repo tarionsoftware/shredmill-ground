@@ -38,7 +38,8 @@ export default function WaitlistMap() {
       attributionControl: false,
       scrollWheelZoom: false,
       maxBoundsViscosity: 1.0,
-      maxBounds: [[-85, -Infinity], [85, Infinity]],
+      maxBounds: [[-85, -180], [85, 180]],
+      worldCopyJump: false,
       minZoom: 2,
     }).setView([39.5, -98.0], 4);
 
