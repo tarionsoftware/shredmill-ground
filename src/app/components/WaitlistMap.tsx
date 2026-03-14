@@ -37,6 +37,9 @@ export default function WaitlistMap() {
       zoomControl: false,
       attributionControl: false,
       scrollWheelZoom: false,
+      maxBoundsViscosity: 1.0,
+      maxBounds: [[-85, -Infinity], [85, Infinity]],
+      minZoom: 2,
     }).setView([39.5, -98.0], 4);
 
     mapInstanceRef.current = map;
