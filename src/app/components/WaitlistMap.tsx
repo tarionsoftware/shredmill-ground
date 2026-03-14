@@ -137,7 +137,7 @@ export default function WaitlistMap() {
           THE <span className="text-neon">DEMAND</span> IS REAL
         </h2>
         <p className="text-zinc-400 text-sm sm:text-base">
-          People across the country are already on the waitlist.
+          People across the world are already on the waitlist.
         </p>
       </div>
 
